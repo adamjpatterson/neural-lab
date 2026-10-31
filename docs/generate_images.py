@@ -68,14 +68,14 @@ def visualize_network(before, after, inputs):
     return figure
 
 
-def plot_predictions(images, labels, predictions=None, title='Sample digits'):
+def plot_predictions(figure, images, labels, predictions=None, title='Sample digits'):
     """Return a figure of the first twelve supplied images, without selecting successes."""
     count = min(12, len(images))
     if count == 0:
         raise ValueError('Supply at least one image')
     columns = min(4, count)
     rows = (count + columns - 1) // columns
-    figure, axes = plt.subplots(rows, columns, figsize=(2 * columns, 2 * rows), squeeze=False)
+    axes = figure.subplots(rows, columns, squeeze=False)
     for index, axis in enumerate(axes.flat):
         axis.axis('off')
         if index >= len(images):
@@ -86,13 +86,12 @@ def plot_predictions(images, labels, predictions=None, title='Sample digits'):
             label += f'   Predicted: {predictions[index]}'
         axis.set_title(label, fontsize=10)
     figure.suptitle(title)
-    figure.tight_layout()
     return figure
 
 
-def plot_confusion_matrix(matrix):
+def plot_confusion_matrix(figure, matrix):
     """Return a figure; rows are true digits and columns are predicted digits."""
-    figure, axis = plt.subplots(figsize=(7, 6))
+    axis = figure.subplots()
     heatmap = axis.imshow(matrix, cmap='Blues')
     axis.set(xticks=range(10), yticks=range(10), xlabel='Predicted digit',
              ylabel='True digit', title='Neural-pleX: held-out confusion matrix')
@@ -101,7 +100,6 @@ def plot_confusion_matrix(matrix):
             axis.text(column, row, str(matrix[row, column]), ha='center', va='center',
                       color='white' if matrix[row, column] > matrix.max() / 2 else 'black')
     figure.colorbar(heatmap, ax=axis)
-    figure.tight_layout()
     return figure
 
 
@@ -152,14 +150,14 @@ def main():
     accuracy = accuracy_score(truth, predictions)
     matrix = confusion_matrix(truth, predictions, labels=list(range(10)))
     print(f'Digits accuracy: {accuracy:.2%} ({len(train)} train, {len(test)} test)')
-    figure = plot_predictions(digits.images[test[:12]], truth[:12], predictions[:12],
-                              title=f'Neural-pleX: held-out digits (overall accuracy {accuracy:.1%})')
-    figure.savefig(output / 'digits_predictions.png', dpi=150)
+    figure = plt.figure(figsize=(15, 6), layout='constrained')
+    predictions_panel, matrix_panel = figure.subfigures(1, 2, width_ratios=[8, 7])
+    plot_predictions(predictions_panel, digits.images[test[:12]], truth[:12], predictions[:12],
+                     title=f'Neural-pleX: held-out digits (overall accuracy {accuracy:.1%})')
+    plot_confusion_matrix(matrix_panel, matrix)
+    figure.savefig(output / 'digits_results.png', dpi=150)
     plt.close(figure)
-    figure = plot_confusion_matrix(matrix)
-    figure.savefig(output / 'digits_confusion_matrix.png', dpi=150)
-    plt.close(figure)
-    print(f'Wrote three README images to {output}')
+    print(f'Wrote two README images to {output}')
 
 
 if __name__ == '__main__':
