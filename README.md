@@ -165,9 +165,7 @@ The notebook imports `plot_predictions` and `plot_confusion_matrix` from [its vi
 
 The prediction figure shows the first twelve test images. The confusion matrix includes all 450 test images; rows show the true digit and columns show the predicted digit.
 
-![Digits predictions](https://raw.githubusercontent.com/adamjpatterson/neuralplex/main/images/digits_predictions.png)
-
-![Digits confusion matrix](https://raw.githubusercontent.com/adamjpatterson/neuralplex/main/images/digits_confusion_matrix.png)
+![Digits predictions and confusion matrix](https://raw.githubusercontent.com/adamjpatterson/neuralplex/main/images/digits_results.png)
 
 ## Tests
 
@@ -189,7 +187,7 @@ The [documentation-image project](https://github.com/adamjpatterson/neuralplex/b
 python generate_images.py
 ```
 
-It writes the nibble network image, digits predictions, and confusion matrix to `images/`.
+It writes the nibble network image and the combined digits predictions and confusion matrix image to `images/`.
 
 ## Support
 
