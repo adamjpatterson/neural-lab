@@ -157,7 +157,16 @@ def main():
     plot_confusion_matrix(matrix_panel, matrix)
     figure.savefig(output / 'digits_results.png', dpi=150)
     plt.close(figure)
-    print(f'Wrote two README images to {output}')
+    figure = plt.figure(figsize=(8, 6), layout='constrained')
+    plot_predictions(figure, digits.images[test[:12]], truth[:12], predictions[:12],
+                     title=f'Neural-pleX: held-out digits (overall accuracy {accuracy:.1%})')
+    figure.savefig(output / 'digits_predictions.png', dpi=150)
+    plt.close(figure)
+    figure = plt.figure(figsize=(7, 6), layout='constrained')
+    plot_confusion_matrix(figure, matrix)
+    figure.savefig(output / 'digits_confusion_matrix.png', dpi=150)
+    plt.close(figure)
+    print(f'Wrote four README images to {output}')
 
 
 if __name__ == '__main__':
