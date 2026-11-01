@@ -1,6 +1,6 @@
 # README image generation
 
-This project generates the repository's two README illustrations.
+This project generates the README illustrations, including separate digits figures linked from older releases.
 
 ## Setup and run
 
@@ -27,6 +27,8 @@ The script prints the nibble R² and digits accuracy, and overwrites:
 
 - `../images/nibble_multiweight.png`
 - `../images/digits_results.png`
+- `../images/digits_predictions.png`
+- `../images/digits_confusion_matrix.png`
 
 Review the regenerated images and update any reported README results when changing these settings.
 
