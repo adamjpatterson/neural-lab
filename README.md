@@ -6,7 +6,7 @@ A neural network implementation built as an explicit graph of neurons and weight
 
 ## Introduction
 
-**Neural-pleX** represents individual neurons and their connections explicitly, with manual backpropagation. The Neural-pleX API consists of Network, Layer, and Neuron constructors. The networks can be easily [visualized](#visualizations-of-the-network-before-and-after-training) using a visualization library.
+**Neural-pleX** represents individual neurons and their connections explicitly. Backpropagation is done using explicitly computed gradients. The object-oriented API consists of Network, Layer, and Neuron constructors. The networks can be easily [visualized](#visualizations-of-the-network-before-and-after-training) using a visualization library.
 
 ## Table of contents
 
