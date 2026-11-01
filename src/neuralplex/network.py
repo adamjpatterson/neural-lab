@@ -72,17 +72,3 @@ class Network:
                 for source in neuron.weights:
                     neuron.weights[source] -= neuron.step * neuron.delta * source.value
                 neuron.bias -= neuron.step * neuron.delta
-
-    def detach(self, neuron: Neuron) -> None:
-        """Remove a hidden neuron and its edges, between training steps."""
-        if neuron in self.input_layer.neurons or neuron in self.output_layer.neurons:
-            raise ValueError("Input and output neurons cannot be detached")
-        for layer in self.layers[1:-1]:
-            if neuron in layer.neurons:
-                for source in list(neuron.neuronsLHS):
-                    neuron.disconnectLHS(source)
-                for receiver in list(neuron.neuronsRHS):
-                    neuron.disconnectRHS(receiver)
-                layer.neurons.remove(neuron)
-                return
-        raise ValueError("Neuron is not a hidden member of this network")

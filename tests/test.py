@@ -56,38 +56,43 @@ class TestCorrectness(unittest.TestCase):
             model.train([1, 2], [1])
 
 
-    def test_detach_and_reattach(self):
-        inputs = [Neuron(name=f'i{i}') for i in range(3)]
-        hidden, output = Neuron(name='h'), Neuron(name='o')
-        model = Network([Layer(inputs), Layer([hidden], step=0.01), Layer([output], step=0.01)], seed=42)
-        incoming = dict(hidden.weights)
-        outgoing = output.weights[hidden]
-        before = model.predict([1, 2, 3])
-        model.detach(hidden)
+    def test_disconnect_and_reconnect(self):
+        source, hidden, output = Neuron(), Neuron(), Neuron()
+        model = Network([Layer([source]), Layer([hidden], step=0.01),
+                         Layer([output], step=0.01)], seed=42)
+        hidden.weights[source] = 2.0
+        output.weights[hidden] = 3.0
+        before = model.predict([1])
+        self.assertEqual(before, [6.0])
+
+        weight = output.weights[hidden]
+        hidden.disconnectRHS(output)
+        hidden.disconnectRHS(output)  # Removing an absent edge is harmless.
         self.assertEqual(output.weights, {})
-        self.assertEqual(hidden.weights, {})
         self.assertEqual(hidden.neuronsRHS, [])
-        self.assertTrue(all(not n.neuronsRHS for n in inputs))
-        self.assertEqual(model.predict([1, 2, 3]), [0])
-        model.layers[1].neurons.append(hidden)
-        for source, weight in incoming.items():
-            source.connectRHS(hidden, weight)
-        hidden.connectRHS(output, outgoing)
+        self.assertEqual(model.predict([1]), [0.0])
+        hidden.connectRHS(output, weight)
         hidden.connectRHS(output, 999)  # Existing edges keep their weights.
-        self.assertEqual(model.predict([1, 2, 3]), before)
-        self.assertEqual(hidden.weights, incoming)
-        self.assertEqual(output.weights, {hidden: outgoing})
+        self.assertEqual(output.weights, {hidden: weight})
         self.assertEqual(hidden.neuronsRHS, [output])
-        for source in inputs:
-            self.assertEqual(source.neuronsRHS, [hidden])
-        inputs[0].disconnectRHS(hidden)
-        inputs[0].disconnectRHS(hidden)
-        model.train([1, 2, 3], [1])
+        self.assertEqual(model.predict([1]), before)
+
+        weight = hidden.weights[source]
+        hidden.disconnectLHS(source)
+        hidden.disconnectLHS(source)
+        self.assertEqual(hidden.weights, {})
+        self.assertEqual(source.neuronsRHS, [])
+        self.assertEqual(model.predict([1]), [0.0])
+        hidden.connectLHS(source, weight)
+        self.assertEqual(hidden.weights, {source: weight})
+        self.assertEqual(source.neuronsRHS, [hidden])
+        self.assertEqual(model.predict([1]), before)
+        model.train([1], [5])
+        self.assertLess(abs(model.predict([1])[0] - 5), abs(before[0] - 5))
+
+        output.connectRHS(source)
         with self.assertRaises(ValueError):
-            model.detach(output)
-        output.connectRHS(inputs[0])
-        with self.assertRaises(ValueError):
-            model.predict([1, 2, 3])
+            model.predict([1])
 
     def test_invalid_learning_rates(self):
         for step in [0, -0.1, float('nan'), float('inf'), float('-inf')]:

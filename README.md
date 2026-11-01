@@ -99,7 +99,7 @@ print("Without the connection:", after)
 source.connectRHS(receiver, weight=weight)
 ```
 
-Try several inputs: a connection's effect can depend on the input. To explore a whole hidden neuron, `n1.detach(neuron)` removes it from its layer and disconnects all its incoming and outgoing edges. Save those weights before detaching if you want to restore it, then add the neuron back to its layer and reconnect its edges. Its bias, activation, and learning rate remain on the object.
+Try several inputs: a connection's effect can depend on the input.
 
 You can also change an existing weight through `receiver.weights[source]`. Use the connection methods to add or remove edges so incoming weights and outgoing connections stay consistent.
 
@@ -169,7 +169,7 @@ The prediction figure shows the first twelve test images. The confusion matrix i
 
 ## Tests
 
-The suite in `tests/test.py` checks forward calculations, manual gradients, parameter updates, detachment and reconnection, and input validation.
+The suite in `tests/test.py` checks forward calculations, manual gradients, parameter updates, connection removal and restoration, and input validation.
 
 #### Run all tests.
 
