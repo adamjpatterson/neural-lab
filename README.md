@@ -125,7 +125,7 @@ pip install .
 
 Open [the nibble challenge notebook](https://github.com/adamjpatterson/neuralplex/blob/main/examples/the_nibble_challenge/main.ipynb). It introduces all sixteen four-bit inputs, constructs a 4 → 8 → 1 network, compares initial and trained predictions, and lets you change an input to inspect weights and activations. With seed 42, a step of 0.01, and 10,000 training examples, the displayed R² rounds to 1.000000000.
 
-Training and evaluation both use all sixteen nibbles; this experiment provides no evidence of generalization. The notebook imports `visualize_network` from [its visualization module](https://github.com/adamjpatterson/neuralplex/blob/main/examples/the_nibble_challenge/visualizations.py).
+The network learns a simple linear relationship. Training and evaluation both use all sixteen nibbles; hence, the experiment does not provide evidence of generalization. The notebook imports `visualize_network` from [its visualization module](https://github.com/adamjpatterson/neuralplex/blob/main/examples/the_nibble_challenge/visualizations.py).
 
 ##### Visualizations of the network before and after training
 
