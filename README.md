@@ -72,11 +72,84 @@ print(prediction)
 
 ### How a neuron learns
 
-Each computational neuron calculates `activation(sum(source.value * weight) + bias)`. Inputs hold raw values. `Neuron()` uses linear activation; `Neuron(activation="tanh")` is available for hidden layers.
+Consider the training call from the example above:
 
-`Network.train` minimizes half the sum of squared output errors. It runs the forward pass, accumulates gradients backward through every connection, and only then updates weights and biases. `delta` is the derivative of the loss with respect to the neuron's weighted sum plus bias, before activation. A weight's gradient is `delta * source.value`; the bias gradient is `delta`. The code uses explicit loops, not automatic differentiation. Every non-input neuron needs a finite, positive `step` for training.
+```python
+n1.train([1, 1, 1, 1], [15])
+```
 
-`Neuron(bias=...)` sets the bias. Each incoming connection has its own weight, stored in the receiver neuron's `weights[source]`. `Network(..., seed=42)` initializes weights reproducibly in [-0.1, 0.1]. Connections added later accept an explicit `weight`; repeated connection calls preserve existing weights.
+The four inputs are the bits of `1111`; the target output is `15`. Here is how this one call changes the network. The excerpts below come from `Network` and `Neuron`.
+
+#### 1. Calculate a prediction
+
+`train` checks that there is one target per output neuron and that every non-input neuron has a finite, positive learning rate (`step`). It then calls:
+
+```python
+self.predict(X_train)
+```
+
+`predict` checks the inputs and connections, assigns the four input values, and calls `activate` on each hidden neuron, then the output neuron. Inside `Neuron.activate`:
+
+```python
+total = self.bias
+for source, weight in self.weights.items():
+    total += source.value * weight
+self.value = tanh(total) if self.activation == "tanh" else total
+```
+
+Each neuron adds its bias to the weighted inputs and stores its activation in `value`. This example uses linear activation, so `value` is simply `total`. Hidden neurons can also use `tanh`.
+
+#### 2. Clear old gradients and calculate the output error
+
+Back in `train`, gradients from the previous call are cleared before calculating the output gradients:
+
+```python
+for layer in self.layers:
+    for neuron in layer.neurons:
+        neuron.gradient = 0.0
+        neuron.delta = 0.0
+for neuron, target in zip(self.output_layer.neurons, y_train):
+    neuron.gradient = neuron.value - target
+```
+
+The loss is half the sum of squared output errors. A neuron's `gradient` is the derivative of that loss with respect to its output. For our output neuron, this starts as the prediction minus `15`.
+
+#### 3. Propagate gradients backward
+
+`train` visits the output layer first, then the hidden layers:
+
+```python
+for layer in reversed(self.layers[1:]):
+    for neuron in layer.neurons:
+        neuron.propagate()
+```
+
+Inside `Neuron.propagate`:
+
+```python
+derivative = 1 - self.value ** 2 if self.activation == "tanh" else 1.0
+self.delta = self.gradient * derivative
+for source, weight in self.weights.items():
+    source.gradient += self.delta * weight
+```
+
+`delta` is the derivative of the loss with respect to the weighted sum plus bias, before activation. For linear activation, the derivative is `1`, so `delta` equals `gradient`. Each neuron passes a contribution back through each incoming connection. The `+=` lets a source accumulate contributions from every neuron it feeds. Visiting layers in reverse ensures those contributions arrive before the source propagates its own gradient.
+
+#### 4. Update weights and biases
+
+Only after the backward pass finishes does `train` change the parameters:
+
+```python
+for layer in self.layers[1:]:
+    for neuron in layer.neurons:
+        for source in neuron.weights:
+            neuron.weights[source] -= neuron.step * neuron.delta * source.value
+        neuron.bias -= neuron.step * neuron.delta
+```
+
+A weight's gradient is `delta * source.value`; the bias gradient is `delta`. Subtracting `step` times each gradient updates the parameters. Waiting until this point means every backward calculation uses the same weights as the forward pass. The next call to `predict` uses the updated weights and biases.
+
+Each incoming connection has its own weight in `neuron.weights[source]`. `Neuron(bias=...)` sets the initial bias, and `Network(..., seed=42)` initializes weights reproducibly in [-0.1, 0.1]. Connections added later accept an explicit `weight`; repeated connection calls preserve existing weights.
 
 ### Explore a trained network
 
