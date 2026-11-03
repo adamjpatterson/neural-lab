@@ -2,7 +2,7 @@ from math import isfinite
 from typing import Self
 from random import Random
 
-from neuralplex.neuron import Neuron
+from neural_lab.neuron import Neuron
 
 
 class Layer:

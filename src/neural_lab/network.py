@@ -1,8 +1,8 @@
 from math import isfinite
 from random import Random
 
-from neuralplex.layer import Layer
-from neuralplex.neuron import Neuron
+from neural_lab.layer import Layer
+from neural_lab.neuron import Neuron
 
 
 class Network:

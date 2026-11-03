@@ -30,7 +30,7 @@ def plot_confusion_matrix(matrix):
     figure, axis = plt.subplots(figsize=(7, 6))
     heatmap = axis.imshow(matrix, cmap='Blues')
     axis.set(xticks=range(10), yticks=range(10), xlabel='Predicted digit',
-             ylabel='True digit', title='Neural-pleX: held-out confusion matrix')
+             ylabel='True digit', title='Neural Lab: held-out confusion matrix')
     for row in range(10):
         for column in range(10):
             axis.text(column, row, str(matrix[row, column]), ha='center', va='center',

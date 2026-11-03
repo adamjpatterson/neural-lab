@@ -1,12 +1,12 @@
-# Neural-pleX
+# Neural Lab
 
-[![PyPI version](https://img.shields.io/pypi/v/neuralplex.svg)](https://pypi.org/project/neuralplex/) [![Python versions](https://img.shields.io/pypi/pyversions/neuralplex.svg)](https://pypi.org/project/neuralplex/) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/adamjpatterson/neuralplex/blob/main/LICENSE)
+[![PyPI version](https://img.shields.io/pypi/v/neural-lab.svg)](https://pypi.org/project/neural-lab/) [![Python versions](https://img.shields.io/pypi/pyversions/neural-lab.svg)](https://pypi.org/project/neural-lab/) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/adamjpatterson/neural-lab/blob/main/LICENSE)
 
 A neural network implementation built as an explicit graph of neurons and weighted connections.
 
 ## Introduction
 
-**Neural-pleX** represents individual neurons and their connections explicitly. Backpropagation is done using explicitly computed gradients. The object-oriented API consists of Network, Layer, and Neuron constructors. The networks can be easily [visualized](#visualizations-of-the-network-before-and-after-training) using a visualization library.
+**Neural Lab** represents individual neurons and their connections explicitly. Backpropagation is done using explicitly computed gradients. The object-oriented API consists of Network, Layer, and Neuron constructors. The networks can be easily [visualized](#visualizations-of-the-network-before-and-after-training) using a visualization library.
 
 ## Table of contents
 
@@ -23,7 +23,7 @@ A neural network implementation built as an explicit graph of neurons and weight
 To use the published package:
 
 ```bash
-python -m pip install neuralplex
+python -m pip install neural-lab
 ```
 
 ## How it works
@@ -35,7 +35,7 @@ This implementation demonstrates each component of the API. A 3 layer neural net
 #### Import the Network, Layer, and Neuron classes.
 
 ```python
-from neuralplex import Network, Layer, Neuron
+from neural_lab import Network, Layer, Neuron
 ```
 
 #### Set a step.
@@ -196,13 +196,13 @@ pip install .
 
 #### Explore the notebook
 
-Open [the nibble challenge notebook](https://github.com/adamjpatterson/neuralplex/blob/main/examples/the_nibble_challenge/main.ipynb). It introduces all sixteen four-bit inputs, constructs a 4 → 8 → 1 network, compares initial and trained predictions, and lets you change an input to inspect weights and activations. With seed 42, a step of 0.01, and 10,000 training examples, the displayed R² rounds to 1.000000000.
+Open [the nibble challenge notebook](https://github.com/adamjpatterson/neural-lab/blob/main/examples/the_nibble_challenge/main.ipynb). It introduces all sixteen four-bit inputs, constructs a 4 → 8 → 1 network, compares initial and trained predictions, and lets you change an input to inspect weights and activations. With seed 42, a step of 0.01, and 10,000 training examples, the displayed R² rounds to 1.000000000.
 
-The network learns a simple linear relationship. Training and evaluation both use all sixteen nibbles; hence, the experiment does not provide evidence of generalization. The notebook imports `visualize_network` from [its visualization module](https://github.com/adamjpatterson/neuralplex/blob/main/examples/the_nibble_challenge/visualizations.py).
+The network learns a simple linear relationship. Training and evaluation both use all sixteen nibbles; hence, the experiment does not provide evidence of generalization. The notebook imports `visualize_network` from [its visualization module](https://github.com/adamjpatterson/neural-lab/blob/main/examples/the_nibble_challenge/visualizations.py).
 
 ##### Visualizations of the network before and after training
 
-![Nibble network before and after training](https://raw.githubusercontent.com/adamjpatterson/neuralplex/main/images/nibble_multiweight.png)
+![Nibble network before and after training](https://raw.githubusercontent.com/adamjpatterson/neural-lab/main/images/nibble_multiweight.png)
 
 - Edge thickness is proportional to the absolute connection weight. Blue is positive; orange is negative. Zero-weight edges have zero width.
 - Node area above a small visibility floor is proportional to absolute activation. Green nodes are inputs, red nodes are hidden, and yellow is the output.
@@ -228,17 +228,17 @@ pip install .
 
 #### Explore the notebook
 
-Open [the digits experiment notebook](https://github.com/adamjpatterson/neuralplex/blob/main/examples/the_digits_experiment/main.ipynb). It starts by displaying the [8×8 digits dataset](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_digits.html), then normalizes pixels, creates a training/test split, constructs a 64 → 16 → 10 network, trains, and evaluates unseen images. You can inspect an individual prediction and its ten output scores. Scores are not probabilities.
+Open [the digits experiment notebook](https://github.com/adamjpatterson/neural-lab/blob/main/examples/the_digits_experiment/main.ipynb). It starts by displaying the [8×8 digits dataset](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_digits.html), then normalizes pixels, creates a training/test split, constructs a 64 → 16 → 10 network, trains, and evaluates unseen images. You can inspect an individual prediction and its ten output scores. Scores are not probabilities.
 
 The reproducible settings use seed 42, 1,347 training images, 450 test images, 20 epochs, and a step of 0.001. The example achieves **90.22% test accuracy**, compared with **10.22%** for always predicting the most common training digit.
 
-The notebook imports `plot_predictions` and `plot_confusion_matrix` from [its visualization module](https://github.com/adamjpatterson/neuralplex/blob/main/examples/the_digits_experiment/visualizations.py).
+The notebook imports `plot_predictions` and `plot_confusion_matrix` from [its visualization module](https://github.com/adamjpatterson/neural-lab/blob/main/examples/the_digits_experiment/visualizations.py).
 
 #### Digits predictions and confusion matrix
 
 The prediction figure shows the first twelve test images. The confusion matrix includes all 450 test images; rows show the true digit and columns show the predicted digit.
 
-![Digits predictions and confusion matrix](https://raw.githubusercontent.com/adamjpatterson/neuralplex/main/images/digits_results.png)
+![Digits predictions and confusion matrix](https://raw.githubusercontent.com/adamjpatterson/neural-lab/main/images/digits_results.png)
 
 ## Tests
 
@@ -254,7 +254,7 @@ python -m unittest -v
 
 ### Regenerating README figures
 
-The [documentation-image project](https://github.com/adamjpatterson/neuralplex/blob/main/docs/README.md) has its own dependencies and fixed seed-42 scenarios. From `docs/`, after following its environment setup:
+The [documentation-image project](https://github.com/adamjpatterson/neural-lab/blob/main/docs/README.md) has its own dependencies and fixed seed-42 scenarios. From `docs/`, after following its environment setup:
 
 ```bash
 python generate_images.py
@@ -264,6 +264,6 @@ It writes the nibble network image and the combined digits predictions and confu
 
 ## Support
 
-If you have a feature request or run into any issues, feel free to submit an [issue](https://github.com/adamjpatterson/neuralplex/issues). You’re also welcome to reach out to one of the authors.
+If you have a feature request or run into any issues, feel free to submit an [issue](https://github.com/adamjpatterson/neural-lab/issues). You’re also welcome to reach out to one of the authors.
 
 - [Adam Patterson](https://github.com/adamjpatterson)
