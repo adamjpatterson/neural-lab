@@ -13,7 +13,7 @@ from sklearn.datasets import load_digits
 from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn.model_selection import train_test_split
 
-from neuralplex import Network, Layer, Neuron
+from neural_lab import Network, Layer, Neuron
 
 def visualize_network(before, after, inputs):
     """Return an inline before/after figure without writing files.
@@ -94,7 +94,7 @@ def plot_confusion_matrix(figure, matrix):
     axis = figure.subplots()
     heatmap = axis.imshow(matrix, cmap='Blues')
     axis.set(xticks=range(10), yticks=range(10), xlabel='Predicted digit',
-             ylabel='True digit', title='Neural-pleX: held-out confusion matrix')
+             ylabel='True digit', title='Neural Lab: held-out confusion matrix')
     for row in range(10):
         for column in range(10):
             axis.text(column, row, str(matrix[row, column]), ha='center', va='center',
@@ -153,13 +153,13 @@ def main():
     figure = plt.figure(figsize=(15, 6), layout='constrained')
     predictions_panel, matrix_panel = figure.subfigures(1, 2, width_ratios=[8, 7])
     plot_predictions(predictions_panel, digits.images[test[:12]], truth[:12], predictions[:12],
-                     title=f'Neural-pleX: held-out digits (overall accuracy {accuracy:.1%})')
+                     title=f'Neural Lab: held-out digits (overall accuracy {accuracy:.1%})')
     plot_confusion_matrix(matrix_panel, matrix)
     figure.savefig(output / 'digits_results.png', dpi=150)
     plt.close(figure)
     figure = plt.figure(figsize=(8, 6), layout='constrained')
     plot_predictions(figure, digits.images[test[:12]], truth[:12], predictions[:12],
-                     title=f'Neural-pleX: held-out digits (overall accuracy {accuracy:.1%})')
+                     title=f'Neural Lab: held-out digits (overall accuracy {accuracy:.1%})')
     figure.savefig(output / 'digits_predictions.png', dpi=150)
     plt.close(figure)
     figure = plt.figure(figsize=(7, 6), layout='constrained')

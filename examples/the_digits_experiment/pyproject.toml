@@ -3,10 +3,10 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "neuralplex-the-digits-experiment"
+name = "neural-lab-the-digits-experiment"
 version = "0.0.0"
 requires-python = ">=3.11"
-dependencies = ["neuralplex", "jupyterlab", "ipykernel", "matplotlib", "scikit-learn"]
+dependencies = ["neural-lab", "jupyterlab", "ipykernel", "matplotlib", "scikit-learn"]
 
 [tool.setuptools]
 py-modules = []

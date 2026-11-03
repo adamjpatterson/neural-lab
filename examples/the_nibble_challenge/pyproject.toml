@@ -3,10 +3,10 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "neuralplex-the-nibble-challenge"
+name = "neural-lab-the-nibble-challenge"
 version = "0.0.0"
 requires-python = ">=3.11"
-dependencies = ["neuralplex", "jupyterlab", "ipykernel", "matplotlib"]
+dependencies = ["neural-lab", "jupyterlab", "ipykernel", "matplotlib"]
 
 [tool.setuptools]
 py-modules = []

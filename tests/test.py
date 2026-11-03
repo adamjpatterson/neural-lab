@@ -2,7 +2,7 @@
 
 import unittest
 
-from neuralplex import Layer, Network, Neuron
+from neural_lab import Layer, Network, Neuron
 
 
 class TestCorrectness(unittest.TestCase):

@@ -4,7 +4,7 @@ This project generates the README illustrations, including separate digits figur
 
 ## Setup and run
 
-Use Python 3.11 or later. From this directory in the Neuralplex checkout:
+Use Python 3.11 or later. From this directory in the Neural Lab checkout:
 
 ```bash
 python -m venv .venv
